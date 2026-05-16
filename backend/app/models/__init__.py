@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base
@@ -37,7 +37,7 @@ class Mission(Base):
     id = Column(Integer, primary_key=True, index=True)
     titre = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    statut = Column(SQLEnum(MissionStatus), default=MissionStatus.PLANIFIEE, nullable=False)
+    statut = Column(String(50), default=MissionStatus.PLANIFIEE.value, nullable=False)
     date_debut = Column(DateTime(timezone=True), nullable=True)
     date_fin = Column(DateTime(timezone=True), nullable=True)
     responsable = Column(String(255), nullable=True)
@@ -55,8 +55,8 @@ class Task(Base):
     mission_id = Column(Integer, ForeignKey("missions.id", ondelete="CASCADE"), nullable=False)
     titre = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    statut = Column(SQLEnum(TaskStatus), default=TaskStatus.A_FAIRE, nullable=False)
-    priorite = Column(SQLEnum(TaskPriority), default=TaskPriority.MOYENNE, nullable=False)
+    statut = Column(String(50), default=TaskStatus.A_FAIRE.value, nullable=False)
+    priorite = Column(String(50), default=TaskPriority.MOYENNE.value, nullable=False)
     assignee = Column(String(255), nullable=True)
     date_echeance = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -73,7 +73,7 @@ class Document(Base):
     titre = Column(String(255), nullable=False)
     type_document = Column(String(100), nullable=True)
     contenu = Column(Text, nullable=True)
-    statut = Column(SQLEnum(DocumentStatus), default=DocumentStatus.BROUILLON, nullable=False)
+    statut = Column(String(50), default=DocumentStatus.BROUILLON.value, nullable=False)
     auteur = Column(String(255), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
